@@ -8,7 +8,6 @@ services:
     # Publish a single host IP:port -> container port (edit HOST_IP / HOST_PORT in .env or below)
     ports:
       - "5678:5678"
-      - "8888:8888"
     volumes:
       # put your nginx config in ./nginx/conf.d/default.conf (example provided below)
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
@@ -17,7 +16,6 @@ services:
       - "${TLS_CRT_FILENAME}:/etc/ssl/certs/server.crt:ro"
     depends_on:
       - n8n
-      - pgadmin
     networks:
       - n8n
 
@@ -62,25 +60,15 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-n8n}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - n8n
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    restart: unless-stopped
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@example.com}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-admin}
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - n8n
 
 volumes:
   n8n_data:
   postgres_data:
-  pgadmin_data:
 
 networks:
   n8n:
