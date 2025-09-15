@@ -1,1 +1,9 @@
 .env
+
+# TLS certificates and keys
+*.key
+*.crt
+*.pem
+*.pfx
+*.p12
+certs/

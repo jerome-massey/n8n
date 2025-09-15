@@ -1,5 +1,4 @@
 # docker-compose.yml
-version: "3.8"
 
 services:
   nginx:
@@ -56,7 +55,7 @@ services:
       - n8n
 
   postgres:
-    image: postgres:15-alpine
+    image: jeromemassey76/postgres:17-wal
     container_name: n8n_postgres
     restart: unless-stopped
     environment:
