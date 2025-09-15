@@ -9,7 +9,6 @@ services:
     ports:
       - "5678:5678"
       - "8888:8888"
-      - "11434:11434"
     volumes:
       # put your nginx config in ./nginx/conf.d/default.conf (example provided below)
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
@@ -19,7 +18,6 @@ services:
     depends_on:
       - n8n
       - pgadmin
-      - ollama
     networks:
       - n8n
 
@@ -79,29 +77,10 @@ services:
     networks:
       - n8n
 
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    restart: unless-stopped
-    volumes:
-      - ollama_data:/root/.ollama
-    # API is available on the compose network; Nginx publishes externally.
-    # Request NVIDIA GPU devices (see Docker Compose GPU docs). Adjust count/device_ids as needed.
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    networks:
-      - n8n
-
 volumes:
   n8n_data:
   postgres_data:
   pgadmin_data:
-  ollama_data:
 
 networks:
   n8n:
